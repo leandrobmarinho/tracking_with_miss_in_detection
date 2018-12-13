@@ -110,15 +110,34 @@ def yolo_detection(frame, classes_file):
 
 
 def tracking(frame):
-    print(history)
+
+    print('------------\n')
+    for frame_data in history:
+        print(frame_data)
+
+    print('------------\n')
+    return
+
+def add_in_history(boxes, indices):
+
+    frame_data = list()
+    for i, indice in enumerate(indices):
+        person = dict()
+        person['id'] = indice[0]
+        person['box'] = boxes[i]
+        person['feature'] = [1, 1, 1] # TODO feature extraction
+
+        frame_data.append(person)
+
+    history.append(frame_data)
 
 
 # Global history [ {{}, {}, {}}, {{}, {}}, {{}, {}} ]
 history = list(dict(dict()))
 
 # [
-# { {'id': 0, 'box': [7, 211, 269, 580], 'feature' : [1, 1]}, {'id': 1, 'box': [x, y, w, h], 'feature' : [ ... ]} },  1st
-# { {'id': 0,'box': [7, 211, 269, 580], 'feature' : [1, 1]}}                                                          2nd
+# [ {'id': 0, 'box': [7, 211, 269, 580], 'feature' : [1, 1]}, {'id': 1, 'box': [x, y, w, h], 'feature' : [ ... ]} ],  1st
+# [ {'id': 0,'box': [7, 211, 269, 580], 'feature' : [1, 1]}]                                                          2nd
 # ]
 
 if __name__ == '__main__':
@@ -147,6 +166,9 @@ if __name__ == '__main__':
                 boxes, indices, class_ids, confidences = yolo_detection(frame, classes_file)
 
                 tracking(frame)
+
+                # Add
+                add_in_history(boxes, indices)
 
                 # Draw the detected boxes
                 draw_all_box(boxes, indices, class_ids, confidences, classes_file)
