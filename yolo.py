@@ -109,7 +109,17 @@ def yolo_detection(frame, classes_file):
     return boxes, indices, class_ids, confidences
 
 
+def tracking(frame):
+    print(history)
 
+
+# Global history [ {{}, {}, {}}, {{}, {}}, {{}, {}} ]
+history = list(dict(dict()))
+
+# [
+# { {'id': 0, 'box': [7, 211, 269, 580], 'feature' : [1, 1]}, {'id': 1, 'box': [x, y, w, h], 'feature' : [ ... ]} },  1st
+# { {'id': 0,'box': [7, 211, 269, 580], 'feature' : [1, 1]}}                                                          2nd
+# ]
 
 if __name__ == '__main__':
 
@@ -132,12 +142,15 @@ if __name__ == '__main__':
             if skip_frames > 0:
                 continue
 
-            if cont % 1 == 0 and cont > 385:
+            if cont % 1 == 0 and cont > 383:
                 # Detection step
                 boxes, indices, class_ids, confidences = yolo_detection(frame, classes_file)
 
+                tracking(frame)
+
                 # Draw the detected boxes
                 draw_all_box(boxes, indices, class_ids, confidences, classes_file)
+
 
 
 
