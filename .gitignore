@@ -1,2 +1,5 @@
 *.env/
 *.idea/
+yolov2.weights
+6767_7_v1.avi
+elevador.mp4
